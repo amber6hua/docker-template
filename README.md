@@ -1,14 +1,14 @@
 # docker-template
 
-#### 介绍
+## 介绍
 php+nginx+mysql+redis的docker环境
 
 自用的Fastadmin（基于TP5框架） docker环境
 
 
-### 说明
+## 说明
 
-## 自动化启动
+### 自动化启动
 
 > docker-compose.yml 定义了端口|映射|命令等内容 (可根据需要自定义,注意端口不要冲突)
 > up.sh 启动docker容器
@@ -33,27 +33,27 @@ php+nginx+mysql+redis的docker环境
 -p：指定项目的名称，默认将使用所在目录名称作为项目名。
 :::
 
-### 环境说明
+## 环境说明
 
-## php
+### php
 
 > Dockerfile 定义了我构建的php (可根据需要自定义)
 > docker_build_php_fpm.sh 构建脚本
 > 也可以直接使用 gettingfat/om-php-fpm:0.01 上传在dockerhub上的镜像，或自己上传
 > ./php/conf.d/security.ini 定义了php的基本配置 (可根据需要自定义)
 
-## nginx
+### nginx
 
 > ./nginx/conf.d/admin.app.conf 定义了nginx web配置 (可根据需要自定义)
 > ./nginx/log 日志保存的目录
 
-## redis
+### redis
 
 > ./redis/conf/redis.conf redis的基本配置,如设置密码 requirepass youpassword (可根据需要自定义)
 > ./redis/data 数据的保存目录
 > ./redis/log 日志保存的目录
 
-## mysql
+### mysql
 
 > ./mysql/conf.d/slow_query_log.cnf 定义mysql额外配置 (可根据需要自定义)
 > ./mysql/data 数据的保存目录
@@ -64,7 +64,7 @@ php+nginx+mysql+redis的docker环境
 + 可以通过sh脚本 导入数据库和修改mysql用户权限
 + 也可以直接执行命令
 
-### 注意事项
+## 注意事项
 
 > 需要注意端口不要冲突
 > 需要注意mysql和redis密码
