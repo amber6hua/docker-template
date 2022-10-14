@@ -1,0 +1,70 @@
+version: "3"
+services:
+    admin-php-fpm:
+#        image: admin-php-fpm
+#        command: --allow-to-run-as-root --user root:root
+#        command:
+#            - bash
+#            - -c
+#            - |
+#                sh /usr/share/nginx/html/start_gameloop.sh
+#                php-fpm
+        image: gettingfat/om-php-fpm:0.01
+        command:
+            /bin/bash -c "chown -R www-data:www-data /usr/share/nginx/html/ &&
+            php-fpm"
+        restart: unless-stopped
+        cap_add:
+            - SYS_PTRACE
+        links:
+            - mysql
+            - redis
+        volumes:
+            - "../:/usr/share/nginx/html"    # 需要与 nginx 配置的 root 目录一致，或者在 nginx.conf 中 fastcgi_param SCRIPT_FILENAME 指定为 container 中的路径
+            - "./php/conf.d/security.ini:/usr/local/etc/php/conf.d/security.ini" #映射ini文件
+            - "/etc/localtime:/etc/localtime"
+
+    nginx:
+        image: nginx
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        links:
+            - admin-php-fpm
+        volumes:
+            - "./nginx/conf.d:/etc/nginx/conf.d:ro"
+            - "../:/usr/share/nginx/html"
+            - "./nginx/log:/var/log/nginx"
+            - "/etc/localtime:/etc/localtime"
+
+        external_links:
+            - mysql
+            - redis
+
+    redis:
+        image: redis
+        restart: unless-stopped
+        ports:
+            - 6379:6379
+        volumes:
+            - "./redis/conf:/usr/local/etc/redis"
+            - "./redis/log:/var/log/redis"
+            - "./redis/data:/data"
+            - "/etc/localtime:/etc/localtime"
+
+    mysql:
+        image: mysql:8.0.18
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
+        environment:
+            - MYSQL_ROOT_PASSWORD=123456
+        ports:
+            - 3306:3306
+        volumes:
+            - "./mysql/data:/var/lib/mysql"
+            - "./mysql/setup:/setup"
+            - "./mysql/backup:/backup"
+            - "/etc/localtime:/etc/localtime"
+            - "./mysql/conf.d:/etc/mysql/conf.d"
+
+

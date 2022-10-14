@@ -1,0 +1,6 @@
+DROP USER IF EXISTS 'root'@'%';
+
+DROP USER IF EXISTS 'mall'@'%';
+CREATE USER 'mall'@'%' IDENTIFIED BY 'yourpassword';
+GRANT CREATE, DROP, ALTER, DELETE, INSERT, SELECT, UPDATE ON `mall`.* TO 'mall'@'%';
+FLUSH PRIVILEGES;
