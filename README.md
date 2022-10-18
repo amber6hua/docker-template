@@ -17,23 +17,21 @@ php+nginx+mysql+redis的docker环境
 > down.sh 停止docker容器
 
 ### 使用方法
-> 常规方式
-- 把 docker-template/ 下的所有文件和目录，复制到项目根目录下(不包括docker-template)
-- 在根目录下执行启动停止
-- sh up.sh 或 docker-compose up --remove-orphans -d
-- sh down.sh 或 docker-compose down
+- git clone 当前仓库，到项目根目录
+- cd docker-template/
+- cp .env.sample .env （复制为.env文件）
+- docker-compose -p projectname up --remove-orphans -d  (启动 projectname 你的项目名)
+- docker-compose -p projectname down (停止)
+- 可以自行复制上面的命令，写入sh中,方便操作
 
-> 也可以把整个 docker-template/ 把含这个目录，复制到项目根目录下(包括docker-template)
-- 并且做了些小修改，如 docker-compose-v2.yml (把nginx和php的项目映射目录改成上级)
-- 在根目录下执行启动停止
-- docker-compose -f ./docker-template/docker-compose-v2.yml -p projectname up --remove-orphans -d
-- docker-compose -f ./docker-template/docker-compose-v2.yml -p projectname down
-- 可以自行复制上面的命令，写入sh中,方便在项目根目录启动、停止
+#### 也可以在根目录启动docker，需要指定模板文件 和 env-file
+- docker-compose -f ./docker-template/docker-compose.yml --env-file ./docker-template/.env -p projectname up --remove-orphans -d
+- docker-compose -f ./docker-template/docker-compose.yml --env-file ./docker-template/.env -p projectname down
 
-#### 命令说明
-> -f：指定使用的compose模板文件，默认为当前目录下的docker-compose.yaml文件，可以多次指定。
-
-> -p：指定项目的名称，默认将使用所在目录名称作为项目名。
+#### 命令参数说明
+- -f：指定使用的docker-compose模板文件，默认为当前目录下的docker-compose.yml文件，可以多次指定。
+- -p：指定项目的名称，默认将使用所在目录名称作为项目名。
+- -d 后台运行
 
 
 ## 环境说明
@@ -56,7 +54,7 @@ php+nginx+mysql+redis的docker环境
 
 ### redis
 
-> ./redis/conf/redis.conf redis的基本配置,如设置密码 requirepass youpassword (可根据需要自定义)
+> ./redis/conf/redis.conf
 
 > ./redis/data 数据的保存目录
 
@@ -70,6 +68,7 @@ php+nginx+mysql+redis的docker环境
 
 > ./mysql/setup 存放sql和基本脚本的目录
 
++ 通过docker-compose.yml 第一次启动时生成的密码，后续只能通过mysql命令修改，因为数据
 + ./mysql/setup/sql/init-user.sql 删除root权限 新建一个用户并设置密码 (可根据需要自定义)
 + ./mysql/setup/sql 可把项目数据库的sql文件存放在这里
 + 可以通过sh脚本 导入数据库和修改mysql用户权限
