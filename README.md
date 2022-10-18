@@ -19,7 +19,8 @@ php+nginx+mysql+redis的docker环境
 ### 使用方法
 - git clone 当前仓库，到项目根目录
 - cd docker-template/
-- cp .env.sample .env （复制为.env文件）
+- cp .env.sample .env (复制为.env文件)
+- 修改.env 中的密码和端口配置，注意端口不要冲突
 - docker-compose -p projectname up --remove-orphans -d  (启动 projectname 你的项目名)
 - docker-compose -p projectname down (停止)
 - 可以自行复制上面的命令，写入sh中,方便操作
