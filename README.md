@@ -6,15 +6,7 @@ php+nginx+mysql+redis的docker环境
 自用的Fastadmin（基于TP5框架） docker环境
 
 
-## 说明
-
-### 自动化启动
-
-> docker-compose.yml 定义了端口|映射|命令等内容 (可根据需要自定义,注意端口不要冲突)
-
-> up.sh 启动docker容器
-
-> down.sh 停止docker容器
+## 自动化启动
 
 ### 使用方法
 - git clone 当前仓库，到项目根目录
