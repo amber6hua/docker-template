@@ -60,9 +60,8 @@ services:
         command: redis-server /usr/local/etc/redis/redis.conf
         volumes:
             - "./redis/conf:/usr/local/etc/redis:ro"
-            - "./redis/log:/var/log/redis:rw"
+            - "./redis/log/redis.log:/var/log/redis.log:rw"
             - "./redis/data:/data:rw"
             - "./mysql/conf.d:/etc/mysql/conf.d"
             - "/etc/localtime:/etc/localtime"
-
 
