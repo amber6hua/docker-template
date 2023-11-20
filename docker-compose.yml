@@ -39,15 +39,16 @@ services:
 
     redis:
         image: ${REDIS}
-        command: --requirepass=${REDIS_PASSWORD}
         restart: unless-stopped
         ports:
             - ${REDIS_PORT}:6379
+        command: redis-server /usr/local/etc/redis/redis.conf
+        environment:
+            - TZ=${TIMEZONE}
         volumes:
             - "./redis/conf:/usr/local/etc/redis"
             - "./redis/log:/var/log/redis"
-            - "./redis/data:/data"
-            - "/etc/localtime:/etc/localtime"
+             - "./redis/data:/data"
 
     mysql:
         image: ${MYSQL}
