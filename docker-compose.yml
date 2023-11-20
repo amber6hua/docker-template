@@ -1,6 +1,6 @@
 version: "3"
 services:
-    admin-php-fpm:
+    php-fpm:
 #        image: admin-php-fpm
 #        command: --allow-to-run-as-root --user root:root
 #        command:
@@ -30,16 +30,12 @@ services:
         ports:
             - ${NGINX_PORT}:80
         links:
-            - admin-php-fpm
+            - php-fpm
         volumes:
             - "./nginx/conf.d:/etc/nginx/conf.d:ro"
             - "../:/usr/share/nginx/html"
             - "./nginx/log:/var/log/nginx"
             - "/etc/localtime:/etc/localtime"
-
-        external_links:
-            - mysql
-            - redis
 
     redis:
         image: ${REDIS}
@@ -59,8 +55,6 @@ services:
         restart: unless-stopped
         environment:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    #root用户的密码
-            - MYSQL_USER=${MYSQL_USER}                      #运行时需要创建用户名，与MYSQL_PASSWORD一起使用
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}              #运行时需要创建的用户名对应的密码，与MYSQL_USER一起使用
         ports:
             - ${MYSQL_PORT}:3306
         volumes:
