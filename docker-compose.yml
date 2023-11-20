@@ -37,19 +37,6 @@ services:
             - "./nginx/log:/var/log/nginx"
             - "/etc/localtime:/etc/localtime"
 
-    redis:
-        image: ${REDIS}
-        restart: unless-stopped
-        ports:
-            - ${REDIS_PORT}:6379
-        command: redis-server /usr/local/etc/redis/redis.conf
-        environment:
-            - TZ=${TIMEZONE}
-        volumes:
-            - "./redis/conf:/usr/local/etc/redis"
-            - "./redis/log:/var/log/redis"
-             - "./redis/data:/data"
-
     mysql:
         image: ${MYSQL}
         command: --default-authentication-plugin=mysql_native_password
@@ -59,10 +46,23 @@ services:
         ports:
             - ${MYSQL_PORT}:3306
         volumes:
-            - "./mysql/data:/var/lib/mysql"
+            - "./mysql/data:/var/lib/mysql:rw"
             - "./mysql/setup:/setup"
             - "./mysql/backup:/backup"
             - "/etc/localtime:/etc/localtime"
             - "./mysql/conf.d:/etc/mysql/conf.d"
+
+    redis:
+        image: ${REDIS}
+        restart: unless-stopped
+        ports:
+            - ${REDIS_PORT}:6379
+        command: redis-server /usr/local/etc/redis/redis.conf
+        environment:
+            - TZ=${TIMEZONE}
+        volumes:
+            - "./redis/conf:/usr/local/etc/redis:ro"
+            - "./redis/log:/var/log/redis:rw"
+            - "./redis/data:/data:rw"
 
 
