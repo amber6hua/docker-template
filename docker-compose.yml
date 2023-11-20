@@ -46,7 +46,7 @@ services:
         ports:
             - ${MYSQL_PORT}:3306
         volumes:
-            - "./mysql/data:/var/lib/mysql:rw"
+            - "./mysql/data:/var/lib/mysql"
             - "./mysql/setup:/setup"
             - "./mysql/backup:/backup"
             - "./mysql/conf.d:/etc/mysql/conf.d"
@@ -59,9 +59,9 @@ services:
             - ${REDIS_PORT}:6379
         command: redis-server /usr/local/etc/redis/redis.conf
         volumes:
-            - "./redis/conf:/usr/local/etc/redis:ro"
-            - "./redis/log/redis.log:/var/log/redis.log:rw"
-            - "./redis/data:/data:rw"
+            - "./redis/conf:/usr/local/etc/redis"
+            - "./redis/log/redis.log:/var/log/redis.log"
+            - "./redis/data:/data"
             - "./mysql/conf.d:/etc/mysql/conf.d"
             - "/etc/localtime:/etc/localtime"
 
