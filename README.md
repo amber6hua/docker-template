@@ -72,3 +72,25 @@ php+nginx+mysql+redis的docker环境
 - 需要注意端口不要冲突
 - 需要注意mysql和redis密码
 - 填写数据库链接配置时 hostname=mysql 填写docker-compose.yml 定义的服务名 (如admin-php-fpm、mysql)
+
+## 进阶
+
+### 客户端真实IP
+- docker容器中，获取的客户端IP,往往是容器内部IP，可以通过宿主机nginx 反向代理，获得客户端真实IP $_SERVER['X-Real-IP']
+
+```shell
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+            proxy_pass   http://127.0.0.1:8080;
+            #下边是为获取真实IP所做的设置
+            proxy_set_header    X-Real-IP        $remote_addr;
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr;
+            proxy_set_header    X-Forwarded-Proto $scheme;
+            proxy_redirect      default;
+    }
+}
+```
